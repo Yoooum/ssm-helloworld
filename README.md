@@ -1,12 +1,7 @@
-# SSM-HelloWord
+# SSM-HelloWorld
 
-MyBatis运行示例  
-
-文件结构  
-
-![img_2.png](img_2.png)
-## MyBatis
-需要自己在 resources 目录添加 db.properties 配置数据库信息
+## 文件补充
+部分模块需要自己在 resources 目录添加 db.properties 配置数据库信息,模板如下
 
 ```properties
 # 数据库配置信息
@@ -28,9 +23,5 @@ create table t_user
 	email varchar(50) null
 );
 ```
-![img.png](img.png)
 
-接下来运行 test 目录的单元测试
-
-![img_1.png](img_1.png)
 

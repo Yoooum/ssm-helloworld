@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--
+        scope: 设置作用域
+        scope="singleton(单例)|prototype(多例)"
+        单例模式: 表示获取改bean所对应的对象是同一个(大部分场景使用这个)
+        多例模式: 表示获取该bean所对应的对象都不是同一个
+    -->
+    <bean id="student" class="org.example.spring.pojo.Student">
+        <property name="id" value="22"/>
+        <property name="name" value="张三"/>
+        <property name="age" value="33"/>
+    </bean>
+</beans>

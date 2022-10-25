@@ -1,10 +1,127 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util.xsd">
 
     <!-- bean: 创建bean对象，将对象交给IOC容器管理 -->
     <!-- id：唯一标识 -->
     <!-- class：bean对象对应的类型 -->
-    <bean id="Student_1" class="org.example.spring.pojo.Student"></bean>
+    <bean id="student_1" class="org.example.spring.pojo.Student"/>
+
+    <!-- Setter 注入 -->
+    <bean id="student_2" class="org.example.spring.pojo.Student">
+        <!-- property: 通过成员变量的set方法进行赋值 -->
+        <!-- name: 属性名（属性名由getXxx()、setXxx()定义，和成员变量无关） -->
+        <!-- value: 赋值 -->
+        <property name="id" value="1"/>
+        <property name="name" value="张三"/>
+        <property name="age" value="99"/>
+        <property name="gender" value="男"/>
+    </bean>
+
+    <!-- 构造器注入 -->
+    <bean id="student_3" class="org.example.spring.pojo.Student">
+        <constructor-arg value="2"/>
+        <constructor-arg value="李四"/>
+        <constructor-arg value="66" name="age"/>
+        <constructor-arg value="男"/>
+    </bean>
+
+    <bean id="student_4" class="org.example.spring.pojo.Student">
+        <property name="id" value="3"/>
+        <!-- 特殊字符处理: <王五> -->
+        <!--<property name="name" value="&lt;王五&gt;"></property>-->
+        <property name="name">
+            <value><![CDATA[<王五>]]></value>
+        </property>
+        <property name="age" value="11"/>
+        <!-- 为属性设置null -->
+        <property name="gender">
+            <null />
+        </property>
+    </bean>
+
+    <!-- 类类型赋值 -->
+    <bean id="student_5" class="org.example.spring.pojo.Student">
+        <property name="id" value="5"/>
+        <property name="name" value="赵六"/>
+        <property name="age" value="66"/>
+        <property name="gender" value="女"/>
+        <!-- ref 引用 IOC 容器中其他 bean id -->
+        <!--<property name="clazz" ref="clazz_1"></property>-->
+        <!-- 级联方式,要提前为 clazz 属性赋值或实例化 -->
+        <!--<property name="clazz.id" value="123"></property>-->
+        <!--<property name="clazz.name" value="2班"></property>-->
+        <!-- 内部 bean 的方式 -->
+        <property name="clazz">
+            <!-- 内部 bean 只能在当前 bean 使用,不能直接通过 IOC 容器获取 -->
+            <bean class="org.example.spring.pojo.Clazz">
+                <property name="id" value="456"/>
+                <property name="name" value="3班"/>
+            </bean>
+        </property>
+        <property name="hobby">
+            <!-- 数组赋值 -->
+            <array>
+                <value>爱好1</value>
+                <value>爱好2</value>
+                <value>爱好3</value>
+            </array>
+        </property>
+        <!-- Map 赋值方式1
+        <property name="teacherMap">
+            <map>
+                <entry key="1" value-ref="teacher_1"></entry>
+                <entry key="2" value-ref="teacher_2"></entry>
+            </map>
+        </property>
+        -->
+        <!-- Map 赋值方式2 -->
+        <property name="teacherMap" ref="teacherMap"/>
+    </bean>
+
+    <bean id="clazz_1" class="org.example.spring.pojo.Clazz">
+        <property name="id" value="1"/>
+        <property name="name" value="1班"/>
+        <property name="students">
+            <!-- List 引用赋值 -->
+            <list>
+                <ref bean="student_2"/>
+                <ref bean="student_3"/>
+            </list>
+        </property>
+    </bean>
+
+    <!-- ref 引用 list -->
+    <bean id="clazz_2" class="org.example.spring.pojo.Clazz">
+        <property name="id" value="1"/>
+        <property name="name" value="1班"/>
+        <property name="students" ref="studentList"/>
+    </bean>
+
+    <bean id="teacher_1" class="org.example.spring.pojo.Teacher">
+        <property name="id" value="1"/>
+        <property name="name" value="老师1"/>
+    </bean>
+    <bean id="teacher_2" class="org.example.spring.pojo.Teacher">
+        <property name="id" value="2"/>
+        <property name="name" value="老师2"/>
+    </bean>
+
+    <!--  -->
+    <!-- 配置一个集合类型的 bean ,需要配置 util 的约束(直接用 <util:list> ,会自动导入约束) -->
+    <util:list id="studentList">
+        <ref bean="student_2"/>
+        <ref bean="student_3"/>
+    </util:list>
+
+    <util:map id="teacherMap">
+        <entry key="1" value-ref="teacher_1"/>
+        <entry key="2" value-ref="teacher_2"/>
+    </util:map>
+
+    <!-- p 命名空间 -->
+    <bean id="student_6" class="org.example.spring.pojo.Student" p:id="11" p:name="学生6" p:teacherMap-ref="teacherMap"/>
 </beans>
