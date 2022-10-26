@@ -11,7 +11,8 @@
     <!-- type="assignable": 根据类的类型进行排除, expression: 需要设置排除的类的全类名-->
     <context:component-scan base-package="org.example.spring">
         <!-- 排除扫描 -->
-        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+        <!--<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>-->
         <!--<context:exclude-filter type="assignable" expression="org.example.spring.controller.UserController"/>-->
+        <!-- 使用 context:include-filter(包含扫描) 需要设置 use-default-filters="false"  -->
     </context:component-scan>
 </beans>
